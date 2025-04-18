@@ -53,4 +53,34 @@ func main() {
 
 	fmt.Println(u)
 
+	for id := 2; id < 10; id++ {
+		if _, err := db.Exec("insert into foo (id) values (?)", id); err != nil {
+			panic(err)
+		}
+	}
+
+	var count int64
+	if err := db.QueryRow("select count(*) from foo").Scan(&count); err != nil {
+		panic(err)
+	}
+	fmt.Println(count)
+
+	input := "drop database"
+	// deleteSql := fmt.Sprintf(`
+	// 	DELETE FROM foo WHERE id = %s
+	// `, input)
+
+	deleteSql := `
+		delete from foo where id = ?
+	`
+
+	if _, err := db.Exec(deleteSql, input); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow("select count(*) from foo").Scan(&count); err != nil {
+		panic(err)
+	}
+	fmt.Println(count)
+
 }
