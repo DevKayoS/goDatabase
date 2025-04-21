@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -18,27 +19,34 @@ func main() {
 		panic(err)
 	}
 
-	// query := "create table foo (id bigserial primary key, bar varchar(255))"
-	// if _, err := db.Exec(context.Background(), query); err != nil {
-	// 	panic(err)
-	// }
+	queries := New(db)
+	ctx := context.Background()
 
-	query := "insert into foo (bar) values ($1);"
+	authors, err := queries.ListAuthors(ctx)
 
-	if _, err := db.Exec(context.Background(), query, "abcdsa"); err != nil {
+	if err != nil {
 		panic(err)
 	}
 
-	query = "select * from foo;"
-	type foobar struct {
-		id  int64
-		bar string
-	}
+	fmt.Println(authors)
 
-	var foo foobar
-	if err := db.QueryRow(context.Background(), query).Scan(&foo.id, &foo.bar); err != nil {
+	authorCreated, err := queries.CreateAuthor(ctx, CreateAuthorParams{
+		Name: "Kayo Vinicius",
+		Bio:  pgtype.Text{String: "Desenvolvedor de Software", Valid: true},
+	})
+
+	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%#+v\n", foo)
+	fmt.Println(authorCreated)
+
+	authors, err = queries.ListAuthors(ctx)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(authors)
+
 }
