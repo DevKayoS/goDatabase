@@ -1,14 +1,15 @@
-services:
+services: 
   db:
-    image: mysql
+    image: postgres:latest
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: test
     ports: 
-      - 3306:3306
+      - 8541:5432
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "pg"
+      POSTGRES_DB: "test"
+      POSTGRES_PASSWORD: "password"
 
 volumes:
   db:
