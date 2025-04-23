@@ -1,16 +1,12 @@
-services: 
-  db:
-    image: postgres:latest
-    restart: always
+services:
+  redis:
+    image: redis:latest
     ports: 
-      - 8541:5432
+      - 6379:6379
     volumes:
-      - db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: "pg"
-      POSTGRES_DB: "test"
-      POSTGRES_PASSWORD: "password"
+      - redis:/data
+    restart: always
 
 volumes:
-  db:
+  redis:
     driver: local
