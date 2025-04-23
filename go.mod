@@ -5,6 +5,8 @@ go 1.24.2
 require (
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/jackc/pgx/v5 v5.7.4
+	github.com/jmoiron/sqlx v1.4.0
+	github.com/lib/pq v1.10.9
 	github.com/mattn/go-sqlite3 v1.14.28
 	modernc.org/sqlite v1.37.0
 	zombiezen.com/go/sqlite v1.4.0
